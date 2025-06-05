@@ -554,9 +554,6 @@ export default {
           { text: '查询黑名单', callback_data: `check_blocklist_${privateChatId}` }
         ],
         [
-          { text: userRawEnabled ? '关闭用户Raw' : '开启用户Raw', callback_data: `toggle_user_raw_${privateChatId}` },
-        ],
-        [
           { text: '删除用户', callback_data: `delete_user_${privateChatId}` }
         ]
       ];
@@ -588,12 +585,14 @@ export default {
       const userRawEnabled = (await getSetting('user_raw_enabled', env.D1)) === 'true';
       if (!userRawEnabled) return '验证成功！您现在可以与我聊天。';
 
+      const response = await fetch('');
       if (!response.ok) return '验证成功！您现在可以与我聊天。';
       const message = await response.text();
       return message.trim() || '验证成功！您现在可以与我聊天。';
     }
 
     async function getNotificationContent() {
+      const response = await fetch('');
       if (!response.ok) return '';
       const content = await response.text();
       return content.trim() || '';
@@ -1000,6 +999,9 @@ export default {
           callback_data: `verify_${chatId}_${option}_${option === correctResult ? 'correct' : 'wrong'}`
         }));
 
+        const question = `请计算：${num1} ${operation} ${num2} = ?（点击下方按钮完成验证）`;
+        const nowSeconds = Math.floor(Date.now() / 1000);
+        const codeExpiry = nowSeconds + 300;
 
         let userState = userStateCache.get(chatId);
         if (userState === undefined) {
