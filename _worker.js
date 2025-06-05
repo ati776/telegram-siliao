@@ -554,6 +554,10 @@ export default {
           { text: '查询黑名单', callback_data: `check_blocklist_${privateChatId}` }
         ],
         [
+          { text: userRawEnabled ? '关闭用户Raw' : '开启用户Raw', callback_data: `toggle_user_raw_${privateChatId}` },
+          { text: 'GitHub项目', url: 'https://github.com/iawooo/ctt' }
+        ],
+        [
           { text: '删除用户', callback_data: `delete_user_${privateChatId}` }
         ]
       ];
@@ -585,14 +589,14 @@ export default {
       const userRawEnabled = (await getSetting('user_raw_enabled', env.D1)) === 'true';
       if (!userRawEnabled) return '验证成功！您现在可以与我聊天。';
 
-      const response = await fetch('');
+      const response = await fetch('https://raw.githubusercontent.com/iawooo/ctt/refs/heads/main/CFTeleTrans/start.md');
       if (!response.ok) return '验证成功！您现在可以与我聊天。';
       const message = await response.text();
       return message.trim() || '验证成功！您现在可以与我聊天。';
     }
 
     async function getNotificationContent() {
-      const response = await fetch('');
+      const response = await fetch('https://raw.githubusercontent.com/iawooo/ctt/refs/heads/main/CFTeleTrans/notification.md');
       if (!response.ok) return '';
       const content = await response.text();
       return content.trim() || '';
